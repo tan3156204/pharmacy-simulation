@@ -132,8 +132,19 @@ ELASTIC["card_fee_pct"]    = st.sidebar.number_input("Card Fee %", 0.0, 0.1, ELA
 ELASTIC["expiry_loss_pct_of_cogs"] = st.sidebar.number_input("Expiry Loss % of COGS", 0.0, 0.1, ELASTIC["expiry_loss_pct_of_cogs"], step=0.001, format="%.3f")
 
 st.sidebar.subheader("Utility Coefficients (Advanced)")
+ranges = {
+    "beta_price_rx": (-0.02, 0.00),
+    "beta_price_other": (-0.02, 0.00),
+    "beta_hours": (0.00, 0.05),
+    "beta_promo": (0.00, 0.01),
+    "beta_service": (0.00, 0.20),
+    "beta_thirdparty": (0.00, 0.20),
+    "beta_hmo": (0.00, 0.30),
+}
 for key in ["beta_price_rx","beta_price_other","beta_hours","beta_promo","beta_service","beta_thirdparty","beta_hmo"]:
-    ELASTIC[key] = st.sidebar.number_input(key, -0.02, 0.05, ELASTIC[key], step=0.001, format="%.3f")
+    mn, mx = ranges[key]
+    step = 0.001 if key != "beta_promo" else 0.0001
+    ELASTIC[key] = st.sidebar.number_input(key, mn, mx, ELASTIC[key], step=step, format="%.3f")
 
 # Main: Store controls
 st.subheader("Stores — Decisions")

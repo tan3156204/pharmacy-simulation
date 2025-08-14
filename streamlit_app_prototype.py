@@ -258,8 +258,19 @@ ELASTIC["credit_sales_share"] = st.sidebar.slider("Credit Sales Share (if credit
 ELASTIC["ar_collection_rate"] = st.sidebar.slider("AR Collection Rate per round", 0.0, 1.0, ELASTIC["ar_collection_rate"], 0.05)
 
 st.sidebar.subheader("Utility Coefficients")
+ranges = {
+    "beta_price_rx": (-0.02, 0.00),
+    "beta_price_other": (-0.02, 0.00),
+    "beta_hours": (0.00, 0.05),
+    "beta_promo": (0.00, 0.01),
+    "beta_service": (0.00, 0.20),
+    "beta_thirdparty": (0.00, 0.20),
+    "beta_hmo": (0.00, 0.30),
+}
 for key in ["beta_price_rx","beta_price_other","beta_hours","beta_promo","beta_service","beta_thirdparty","beta_hmo"]:
-    ELASTIC[key] = st.sidebar.number_input(key, -0.02, 0.05, ELASTIC[key], 0.001, format="%.3f")
+    mn, mx = ranges[key]
+    step = 0.001 if key != "beta_promo" else 0.0001
+    ELASTIC[key] = st.sidebar.number_input(key, mn, mx, ELASTIC[key], step=step, format="%.3f")
 
 # Session state for store states
 if "round" not in st.session_state:
